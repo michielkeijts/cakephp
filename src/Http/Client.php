@@ -416,7 +416,6 @@ class Client
             $handleRedirect = $response->isRedirect() && $redirects-- > 0;
             if ($handleRedirect) {
                 $url = $request->getUri();
-                $request = $this->_cookies->addToRequest($request, []);
 
                 $location = $response->getHeaderLine('Location');
                 $locationUrl = $this->buildUrl($location, [], [
@@ -427,6 +426,8 @@ class Client
                 ]);
 
                 $request = $request->withUri(new Uri($locationUrl));
+
+                $request = $this->_cookies->addToRequest($request, []);
             }
         } while ($handleRedirect);
 
